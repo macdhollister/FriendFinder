@@ -18,15 +18,7 @@ function findBestMatch(user) {
     let minDiff = 100;
     let match;
 
-    // for (let other of data) {
-    //     let temp = compareUsers(userAnswers, other.scores);
-    //     if (temp < minDiff) {
-    //         match = other;
-    //     }
-    // }
-
     data.forEach(function(other) {
-        console.log(other);
         let temp = compareUsers(userAnswers, other.scores);
         if (temp < minDiff) match = other;
     })
