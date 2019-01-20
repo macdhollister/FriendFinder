@@ -33,7 +33,7 @@
 
         <div id="questions"></div>
 
-        <button class="btn btn-primary" id="submit" data-toggle="modal" data-target="#myModal">Submit</button>
+        <button type="submit" class="btn btn-primary" id="submit">Submit</button>
 
         <!-- Modal -->
         <div class="modal fade" id="myModal" role="dialog">
@@ -99,30 +99,48 @@
         $('#submit').on('click', event => {
             event.preventDefault();
 
-            const userData = {
-                name: $('#name').val(),
-                photo: $('#picture').val(),
-                scores: [
-                    $("#q1").val(),
-                    $("#q2").val(),
-                    $("#q3").val(),
-                    $("#q4").val(),
-                    $("#q5").val(),
-                    $("#q6").val(),
-                    $("#q7").val(),
-                    $("#q8").val(),
-                    $("#q9").val(),
-                    $("#q10").val()
-                ]
+            function myValidator() {
+                let formsDone = true;
+                $('.form-control').each(function() {
+                    if ($(this).val() === '') formsDone = false;
+                })
+
+                $('.user-responses').each(function() {
+                    if ($(this).val() === '') formsDone = false;
+                })
+
+                return formsDone;
             }
 
-            // AJAX to post to friends API
-            $.post('/api/friends', userData, data => {
-                // grab result from AJAX to display match's name and photo
-                console.log(data);
-                $('#friendName').text(data.name);
-                $('#friendImg').attr('src', data.photo);
-            })
+            if (myValidator()) {
+                const userData = {
+                    name: $('#name').val(),
+                    photo: $('#picture').val(),
+                    scores: [
+                        $("#q1").val(),
+                        $("#q2").val(),
+                        $("#q3").val(),
+                        $("#q4").val(),
+                        $("#q5").val(),
+                        $("#q6").val(),
+                        $("#q7").val(),
+                        $("#q8").val(),
+                        $("#q9").val(),
+                        $("#q10").val()
+                    ]
+                }
+
+                // AJAX to post to friends API
+                $.post('/api/friends', userData, data => {
+                    // grab result from AJAX to display match's name and photo
+                    console.log(data);
+                    $('#friendName').text(data.name);
+                    $('#friendImg').attr('src', data.photo);
+                    $('#myModal').modal('toggle');
+                })
+            } else {
+                alert('Please fill out all parts of the form');
+            }
         })
 
 
